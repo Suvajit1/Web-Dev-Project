@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const Listing = require("./models/listing.js");
+const ejsmate = require("ejs-mate");
 
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -14,6 +15,8 @@ app.use(methodOverride("_method"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+
+app.engine('ejs', ejsmate);
 
 main()
 .then((result)=>{

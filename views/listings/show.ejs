@@ -1,26 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WanderLust</title>
-</head>
-<body>
-    <h3>Listing Details</h3>
-    <ul>
-        <li><%= listing.title %></li>
-        <li><%= listing.description %></li>
-        <li>&#8377; <%= listing.price.toLocaleString("en-in") %></li>
-        <li><%= listing.location %></li>
-        <li><%= listing.country %></li>
-    </ul>
-    
-    <br>
-    <a href="/listings/<%= listing._id %>/edit">Edit this Listing</a>
-    <br><br>
+<% layout("/layouts/boilerplate") %>
 
-    <form method="post" action="/listings/<%= listing._id %>?_method=delete">
-        <button>Delete Listing</button>
-    </form>
-</body>
-</html>
+<div class="row mt-3">
+    <div class="col-8 offset-3">
+        <h3>Listing Details</h3>
+    </div>
+    <div class="card col-6 offset-3">
+        <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing image">
+        <div class="card-body">
+            <p>
+                <b><%= listing.title %></b> <br>
+                <%= listing.description %> <br>
+                &#8377;&nbsp;&nbsp;<%= listing.price.toLocaleString("en-in") %> <br>
+                <%= listing.location %> <br>
+                <%= listing.country %>
+            </p>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-outline-primary mx-2" href="/listings/<%= listing._id %>/edit">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <form method="post" action="/listings/<%= listing._id %>?_method=delete">
+            <button class="btn btn-outline-danger mx-2">
+                <i class="fas fa-trash-alt"></i> Delete
+            </button>
+        </form>
+    </div>
+</div>
+
