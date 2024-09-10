@@ -36,14 +36,18 @@ const listingSchema = new Schema({
 
     price : {
         type : Number,
+        required : true,
+        min : [1, "price is to low for listing"],
     },
 
     location : {
         type : String,
+        required : true,
     },
 
     country : {
         type : String,
+        required : true,
     },
 });
 
