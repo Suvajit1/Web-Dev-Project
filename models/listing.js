@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Review = require("./review");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -19,21 +20,6 @@ const listingSchema = new Schema({
         },
     },
 
-    // image: {
-    //     filename: { 
-    //         type: String, 
-    //         // required: true ,
-    //     },
-    //     url: { 
-    //         type: String, 
-    //         // required: true 
-    //         default : "https://unsplash.com/photos/birds-eye-view-of-islands-guNIjIuUcgY",
-    //         set : (v)=>{
-    //             return v === "" ? "https://unsplash.com/photos/birds-eye-view-of-islands-guNIjIuUcgY" : v;
-    //         },
-    //     }
-    // },
-
     price : {
         type : Number,
         required : true,
@@ -49,6 +35,21 @@ const listingSchema = new Schema({
         type : String,
         required : true,
     },
+
+    reviews : [
+        {
+            type : Schema.Types.ObjectId,
+            ref : "Review",
+        }
+    ]
+});
+
+// post mongoose middleware
+listingSchema.post("findOneAndDelete", async (listing)=>{
+    if(listing && listing.reviews.length){
+        await Review.deleteMany({_id : {$in :listing.reviews}});
+    }
+    // console.log("post middleware");
 });
 
 const Listing = mongoose.model("Listing", listingSchema);
