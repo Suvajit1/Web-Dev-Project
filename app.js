@@ -6,20 +6,12 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsmate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({extended : true}));
-app.use(methodOverride("_method"));
-
-
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-
-
-app.engine('ejs', ejsmate);
 
 main()
 .then((result)=>{
@@ -34,8 +26,39 @@ async function main() {
 }
 
 
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+// for layouts
+app.engine('ejs', ejsmate);
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({extended : true}));
+app.use(methodOverride("_method"));
+
+
+const sessionOption = {
+    secret : "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie : {
+        expires : Date.now() + 24*7*60*60*1000,
+        maxAge : 24*7*60*60*1000,
+        httpOnly : true,
+    },
+};
+
+
 app.get("/", (req, res)=>{
     res.send("hi I'm root!");
+});
+
+app.use(session(sessionOption)); 
+app.use(flash());
+
+app.use((req, res, next)=>{
+    res.locals.successMsg = req.flash("success");
+    res.locals.errorMsg = req.flash("error");
+    next();
 });
 
 
