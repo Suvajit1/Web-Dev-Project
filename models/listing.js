@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Review = require("./review");
+const User = require("./user");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -41,7 +42,12 @@ const listingSchema = new Schema({
             type : Schema.Types.ObjectId,
             ref : "Review",
         }
-    ]
+    ],
+
+    owner : {
+        type : Schema.Types.ObjectId,
+        ref : "User",
+    }
 });
 
 // post mongoose middleware

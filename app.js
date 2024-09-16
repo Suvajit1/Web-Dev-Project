@@ -60,8 +60,8 @@ app.use(session(sessionOption));
 app.use(flash());
 
 // middleware taht initialize passport
-passport.initialize();
-passport.session();
+app.use(passport.initialize());
+app.use(passport.session());
 // use static authenticate method of model in LocalStrategy
 passport.use(new LocalStrategy(User.authenticate()));
 // use static serialize and deserialize of model for passport session support
@@ -71,19 +71,9 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next)=>{
     res.locals.successMsg = req.flash("success");
     res.locals.errorMsg = req.flash("error");
+    res.locals.currUser = req.user;
     next();
 });
-
-
-// app.get("/demouser", async (req, res)=>{
-//     let fakeUser = new User({
-//         email : "demouser@gmail.com",
-//         username : "demoUser1",
-//     });
-
-//     let registeredUser = await User.register(fakeUser, "passwordHello");
-//     res.send(registeredUser);
-// });;
 
 
 app.use("/listings", listingRouter);
