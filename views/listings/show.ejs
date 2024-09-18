@@ -8,25 +8,26 @@
     <div class="card col-6 offset-3 listing-card">
         <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing image">
         <div class="card-body">
-            <p>
-                <%= listing.description %> <br>
-                &#8377;&nbsp;&nbsp;<%= listing.price.toLocaleString("en-in") %> <br>
-                <%= listing.location %> <br>
-                <%= listing.country %>
-            </p>
+            <p>Owned by <i><%= listing.owner.username %></i></p>
+            <p><%= listing.description %> </p>
+            <p>&#8377;&nbsp;&nbsp;<%= listing.price.toLocaleString("en-in") %> </p>
+            <p><%= listing.location %> </p>
+            <p><%= listing.country %></p>    
         </div>
     </div>
 
-    <div class="d-flex justify-content-center">
-        <a class="btn btn-outline-primary mx-2" href="/listings/<%= listing._id %>/edit">
-            <i class="fas fa-edit"></i> Edit
-        </a>
-        <form method="post" action="/listings/<%= listing._id %>?_method=delete">
-            <button class="btn btn-outline-danger mx-2">
-                <i class="fas fa-trash-alt"></i> Delete
-            </button>
-        </form>
-    </div>
+    <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-outline-primary mx-2" href="/listings/<%= listing._id %>/edit">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <form method="post" action="/listings/<%= listing._id %>?_method=delete">
+                <button class="btn btn-outline-danger mx-2">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+            </form>
+        </div>
+    <% } %>
 
     <div class="col-6 offset-3 mb-3">
         <hr>
